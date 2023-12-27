@@ -288,25 +288,52 @@ def calculate_results(y_true, y_pred):
   return model_results
 
 # Function to print training curves of multiple models
-def plot_multiple_training_curves(metrics = ["loss", "accuracy", "val_loss", "val_accuracy"], history=[], model_names=[]):
+import plotly.graph_objects as go
 
-  # Create a figure and axes
-  fig, axes = plt.subplots(nrows=len(metrics), ncols=1, figsize=(12, 8))
+def plot_training_curves(model_histories, model_names):
+    fig_loss_train = go.Figure()
+    fig_loss_val = go.Figure()
+    fig_acc_train = go.Figure()
+    fig_acc_val = go.Figure()
 
-  # Plot first history
-  for i, metric in enumerate(metrics):
-      axes[i].plot(history[0].history[metric], label=f"{model_names[0]}")
-      axes[i].set_ylabel(metric.capitalize())
+    for i, history in enumerate(model_histories):
+        # Extract training history
+        epochs = list(range(1, len(history.history['loss']) + 1))
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+        acc = history.history['accuracy']
+        val_acc = history.history['val_accuracy']
 
-  # Plot other history
-  for hist in range(1, len(history)):
-    for i, metric in enumerate(metrics):
-        axes[i].plot(history[hist].history[metric], label=f"{model_names[hist]}")
+        # Plot training and validation loss
+        fig_loss_train.add_trace(go.Scatter(x=epochs, y=loss, mode='lines', name=f'{model_names[i]}'))
+        fig_loss_val.add_trace(go.Scatter(x=epochs, y=val_loss, mode='lines', name=f'{model_names[i]}'))
 
-  # Add legend and title
-  axes[0].legend()
-  fig.suptitle("Comparison of Model Training Losses and Accuracies")
+        # Plot training and validation accuracy
+        fig_acc_train.add_trace(go.Scatter(x=epochs, y=acc, mode='lines', name=f'{model_names[i]}'))
+        fig_acc_val.add_trace(go.Scatter(x=epochs, y=val_acc, mode='lines', name=f'{model_names[i]}'))
 
-  # Show the plot
-  plt.show()
+    fig_loss_train.update_layout(title='Training Loss',
+                                 xaxis_title='Epoch',
+                                 yaxis_title='Loss',
+                                 legend_title='Models')
+
+    fig_loss_val.update_layout(title='Validation Loss',
+                                xaxis_title='Epoch',
+                                yaxis_title='Loss',
+                                legend_title='Models')
+
+    fig_acc_train.update_layout(title='Training Accuracy',
+                                xaxis_title='Epoch',
+                                yaxis_title='Accuracy',
+                                legend_title='Models')
+
+    fig_acc_val.update_layout(title='Validation Accuracy',
+                               xaxis_title='Epoch',
+                               yaxis_title='Accuracy',
+                               legend_title='Models')
+
+    fig_loss_train.show()
+    fig_loss_val.show()
+    fig_acc_train.show()
+    fig_acc_val.show()
 
