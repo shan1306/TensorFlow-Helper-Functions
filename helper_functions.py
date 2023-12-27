@@ -268,7 +268,7 @@ def walk_through_dir(dir_path):
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 def calculate_results(y_true, y_pred):
-  """
+	"""
   Calculates model accuracy, precision, recall and f1 score of a binary classification model.
 
   Args:
@@ -291,12 +291,11 @@ def calculate_results(y_true, y_pred):
 import plotly.graph_objects as go
 
 def plot_training_curves(model_histories, model_names):
-  fig_loss_train = go.Figure()
+	fig_loss_train = go.Figure()
   fig_loss_val = go.Figure()
   fig_acc_train = go.Figure()
   fig_acc_val = go.Figure()
-  
-  for i, history in enumerate(model_histories):
+	for i, history in enumerate(model_histories):
     # Extract training history
     epochs = list(range(1, len(history.history['loss']) + 1))
     loss = history.history['loss']
