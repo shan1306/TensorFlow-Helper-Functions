@@ -291,7 +291,7 @@ def calculate_results(y_true, y_pred):
 import plotly.graph_objects as go
 
 def plot_training_curves(model_histories, model_names):
-	fig_loss_train = go.Figure()
+  fig_loss_train = go.Figure()
   fig_loss_val = go.Figure()
   fig_acc_train = go.Figure()
   fig_acc_val = go.Figure()
